@@ -21,7 +21,7 @@ class WalletScreenState extends State<WalletScreen> {
             child: ListView(
               children: [
                 Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    //height: MediaQuery.of(context).size.height * 0.35,
                     decoration: const BoxDecoration(
                       color: Color(0xff101213),
                       borderRadius: BorderRadius.only(
@@ -35,10 +35,8 @@ class WalletScreenState extends State<WalletScreen> {
                         walletTop(),
                       ],
                     )),
-                Expanded(
-                    child: Container(
+                Container(
                   padding: const EdgeInsets.all(10),
-                  height: MediaQuery.of(context).size.height,
                   color: CashAppStyles.darkBackground,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,13 +46,21 @@ class WalletScreenState extends State<WalletScreen> {
                         "Transactions",
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
-                      const SizedBox(height: 20,),
-                      transactionItem(),
-                      transactionItem(),
-                      transactionItem()
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return transactionItem();
+                          },
+                          separatorBuilder: (context, index) => const Divider(
+                              height: 1, color: CashAppStyles.lightBackground),
+                          itemCount: 10, padding: const EdgeInsets.all(5),),
                     ],
                   ),
-                ))
+                )
               ],
             )));
   }
@@ -64,8 +70,14 @@ class WalletScreenState extends State<WalletScreen> {
       padding: const EdgeInsets.all(5),
       child: Row(
         children: [
-          SvgPicture.asset("${UrlConstants.imageAssertUrl}badge.svg"),
-          const SizedBox(width: 10,),
+          SvgPicture.asset(
+            "${UrlConstants.imageAssertUrl}badge.svg",
+            height: 45,
+            width: 45,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -74,7 +86,7 @@ class WalletScreenState extends State<WalletScreen> {
                     style: Theme.of(context).textTheme.labelMedium),
               ),
               const SizedBox(
-                height: 5,
+                height: 7,
               ),
               FittedBox(
                 child: Text("For inviting Jack. Oct 30",
@@ -89,7 +101,7 @@ class WalletScreenState extends State<WalletScreen> {
                     .textTheme
                     .labelMedium
                     ?.copyWith(color: CashAppStyles.primaryColor)),
-          )
+          ),
         ],
       ),
     );
@@ -128,7 +140,8 @@ class WalletScreenState extends State<WalletScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [button(), button()],
-        )
+        ),
+        const SizedBox(height: 30),
       ],
     );
   }
